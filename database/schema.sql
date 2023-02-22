@@ -6,13 +6,12 @@ drop schema "public" cascade;
 
 create schema "public";
 
-
- CREATE TABLE "public"."users" (
-	"userId" serial,
+CREATE TABLE "public"."users" (
+	"userId" serial NOT NULL,
 	"username" TEXT NOT NULL UNIQUE,
 	"hashedPassword" TEXT NOT NULL,
-	"createAt" timestamptz(6) not null default now() ,
-	"role" TEXT,
+	"createAt" timestamptz NOT NULL,
+	"role" TEXT NOT NULL,
 	CONSTRAINT "users_pk" PRIMARY KEY ("userId")
 ) WITH (
   OIDS=FALSE
@@ -30,7 +29,7 @@ CREATE TABLE "public"."projects" (
 	"zipcode" TEXT NOT NULL,
 	"notes" TEXT NOT NULL,
 	"completed" BOOLEAN NOT NULL,
-	"assignedTo" serial NOT NULL,
+	"assignedTo" int NOT NULL,
 	"createdAt" timestamptz NOT NULL DEFAULT 'now()',
 	CONSTRAINT "projects_pk" PRIMARY KEY ("projectId")
 ) WITH (
@@ -39,11 +38,11 @@ CREATE TABLE "public"."projects" (
 
 
 
-CREATE TABLE "public"."image" (
+CREATE TABLE "public"."images" (
 	"imageId" serial NOT NULL,
 	"url" TEXT NOT NULL,
-	"project" serial NOT NULL,
-	CONSTRAINT "image_pk" PRIMARY KEY ("imageId")
+	"project" integer NOT NULL,
+	CONSTRAINT "images_pk" PRIMARY KEY ("imageId")
 ) WITH (
   OIDS=FALSE
 );
@@ -53,4 +52,4 @@ CREATE TABLE "public"."image" (
 
 ALTER TABLE "projects" ADD CONSTRAINT "projects_fk0" FOREIGN KEY ("assignedTo") REFERENCES "users"("userId");
 
-ALTER TABLE "image" ADD CONSTRAINT "image_fk0" FOREIGN KEY ("project") REFERENCES "projects"("projectId");
+ALTER TABLE "images" ADD CONSTRAINT "images_fk0" FOREIGN KEY ("project") REFERENCES "projects"("projectId");

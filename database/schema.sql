@@ -10,8 +10,8 @@ CREATE TABLE "public"."users" (
 	"userId" serial NOT NULL,
 	"username" TEXT NOT NULL UNIQUE,
 	"hashedPassword" TEXT NOT NULL,
-	"createAt" timestamptz NOT NULL,
-	"role" TEXT NOT NULL,
+	"createdAt" timestamptz(6) not null default now() ,
+	"role" TEXT /* NOT NULL */,
 	CONSTRAINT "users_pk" PRIMARY KEY ("userId")
 ) WITH (
   OIDS=FALSE

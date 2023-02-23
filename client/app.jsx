@@ -13,12 +13,18 @@ export default function App() {
   const [isAuthorizing, setIsAuthorizing] = useState(true);
   const [route, setRoute] = useState(parseRoute(window.location.hash));
 
+  function handleChange(event) {
+    setRoute(parseRoute(window.location.hash));
+  }
+
   useEffect(() => {
-    window.addEventListener('hashchange', () => setRoute(parseRoute(window.location.hash)));
+    window.addEventListener('hashchange', handleChange);
     const token = window.localStorage.getItem('react-context-jwt');
     const user = token ? jwtDecode(token) : null;
     setUser(user);
     setIsAuthorizing(false);
+    return () => window.removeEventListener('hashchange', handleChange);
+
   }, []);
 
   function handleSignIn(result) {

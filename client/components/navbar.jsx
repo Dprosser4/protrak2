@@ -3,7 +3,7 @@ import { Navbar, Nav, Container } from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import AppContext from '../lib/app-context';
 
-function NavbarMain() {
+export default function NavbarMain() {
   const { user, handleSignOut } = useContext(AppContext);
   return (
     <div>
@@ -13,7 +13,8 @@ function NavbarMain() {
           <Navbar.Toggle aria-controls="responsive-navbar-nav" />
           <Navbar.Collapse id="responsive-navbar-nav">
             <Nav className="me-auto">
-              {!user && <>
+              {!user &&
+              <>
                 <Nav.Link href="#sign-in">Login</Nav.Link>
                 <Nav.Link href="#sign-up">Register</Nav.Link>
               </>
@@ -23,7 +24,6 @@ function NavbarMain() {
                 <Nav.Link href="#">Projects</Nav.Link>
                 <Nav.Link onClick={handleSignOut}>Log Out</Nav.Link>
               </>
-
               }
             </Nav>
           </Navbar.Collapse>
@@ -32,5 +32,3 @@ function NavbarMain() {
     </div>
   );
 }
-
-export default NavbarMain;

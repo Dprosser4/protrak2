@@ -27,10 +27,10 @@ CREATE TABLE "public"."projects" (
 	"city" TEXT NOT NULL,
 	"state" TEXT NOT NULL,
 	"zipcode" TEXT NOT NULL,
-	"notes" TEXT NOT NULL,
-	"completed" BOOLEAN NOT NULL,
-	"assignedTo" int NOT NULL,
-	"createdAt" timestamptz NOT NULL DEFAULT 'now()',
+	"notes" TEXT,
+	"completed" BOOLEAN NOT NULL DEFAULT FALSE,
+	"assignedTo" int,
+	"createdAt" timestamptz(6) not null default now(),
 	CONSTRAINT "projects_pk" PRIMARY KEY ("projectId")
 ) WITH (
   OIDS=FALSE

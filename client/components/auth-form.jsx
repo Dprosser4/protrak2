@@ -17,8 +17,8 @@ export default function AuthForm({ action, onSignIn }) {
       body: JSON.stringify({ username, password })
     };
     fetch(`/api/auth/${action}`, req)
-      .then(res => res.json())
-      .then(result => {
+      .then((res) => res.json())
+      .then((result) => {
         if (action === 'sign-up') {
           window.location.hash = 'sign-in';
         } else if (result.user && result.token) {
@@ -40,7 +40,7 @@ export default function AuthForm({ action, onSignIn }) {
             <Form.Control
                 type="text"
                 placeholder="Enter username"
-              onChange={e => setUsername(e.target.value)}
+              onChange={(e) => setUsername(e.target.value)}
                 required
               />
           </Form.Group>
@@ -51,7 +51,7 @@ export default function AuthForm({ action, onSignIn }) {
                 type="password"
                 placeholder="Password"
                 value={password}
-              onChange={e => setPassword(e.target.value)}
+              onChange={(e) => setPassword(e.target.value)}
                 required
               />
           </Form.Group>

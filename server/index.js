@@ -18,10 +18,6 @@ const app = express();
 app.use(express.json());
 app.use(staticMiddleware);
 
-app.get('/api/hello', (req, res) => {
-  res.json({ hello: 'world' });
-});
-
 app.post('/api/auth/sign-up', (req, res, next) => {
   const { username, password } = req.body;
   if (!username || !password) {
@@ -29,7 +25,7 @@ app.post('/api/auth/sign-up', (req, res, next) => {
   }
   argon2
     .hash(password)
-    .then(hashedPassword => {
+    .then((hashedPassword) => {
       const sql = `
         insert into "users" ("username", "hashedPassword")
         values ($1, $2)
@@ -38,11 +34,11 @@ app.post('/api/auth/sign-up', (req, res, next) => {
       const params = [username, hashedPassword];
       return db.query(sql, params);
     })
-    .then(result => {
+    .then((result) => {
       const [user] = result.rows;
       res.status(201).json(user);
     })
-    .catch(err => next(err));
+    .catch((err) => next(err));
 });
 
 app.post('/api/auth/sign-in', (req, res, next) => {
@@ -58,7 +54,7 @@ app.post('/api/auth/sign-in', (req, res, next) => {
   `;
   const params = [username];
   db.query(sql, params)
-    .then(result => {
+    .then((result) => {
       const [user] = result.rows;
       if (!user) {
         throw new ClientError(401, 'invalid login');
@@ -66,7 +62,7 @@ app.post('/api/auth/sign-in', (req, res, next) => {
       const { userId, hashedPassword } = user;
       return argon2
         .verify(hashedPassword, password)
-        .then(isMatching => {
+        .then((isMatching) => {
           if (!isMatching) {
             throw new ClientError(401, 'invalid login');
           }
@@ -75,7 +71,29 @@ app.post('/api/auth/sign-in', (req, res, next) => {
           res.json({ token, user: payload });
         });
     })
-    .catch(err => next(err));
+    .catch((err) => next(err));
+});
+
+app.post('/api/projects', (req, res, next) => {
+  const { poNumber, name, address, city, state, zipcode, notes } = req.body;
+  if (!poNumber || !name || !address || !city || !state || !zipcode) {
+    res.status(400).json({
+      error: 'poNumber, name, address, city, state, zipcode are required fields'
+    });
+    return;
+  }
+  const sql = `
+    insert into "projects" ("poNumber","name", "address", "city", "state", "zipcode", "notes")
+    values ($1, $2, $3, $4, $5, $6, $7)
+    returning *
+  `;
+  const params = [poNumber, name, address, city, state, zipcode, notes];
+  db.query(sql, params)
+    .then((result) => {
+      const [project] = result.rows;
+      res.status(201).json(project);
+    })
+    .catch((err) => next(err));
 });
 
 app.use(errorMiddleware);

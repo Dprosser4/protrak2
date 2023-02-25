@@ -7,6 +7,7 @@ import Home from './pages/home';
 import NotFound from './pages/not-found';
 import Navbar from './components/navbar';
 import PageContainer from './components/page-container';
+import CreateProject from './pages/create-project';
 
 export default function App() {
   const [user, setUser] = useState();
@@ -45,6 +46,9 @@ export default function App() {
     }
     if (path === 'sign-in' || path === 'sign-up') {
       return <Auth />;
+    }
+    if (path === 'projects') {
+      return <CreateProject />;
     }
     return <NotFound />;
   }

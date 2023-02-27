@@ -43,7 +43,7 @@ export default function ProjectForm() {
       },
       body: JSON.stringify({ poNumber, name, address, city, state, zipcode, notes })
     };
-    fetch('/api/projects', req)
+    fetch('/api/project/newproject', req)
 
       .then((res) => res.json())
       .then((res) => {

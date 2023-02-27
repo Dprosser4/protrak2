@@ -8,6 +8,7 @@ import NotFound from './pages/not-found';
 import Navbar from './components/navbar';
 import PageContainer from './components/page-container';
 import CreateProject from './pages/create-project';
+import ProjectView from './pages/project-view';
 
 export default function App() {
   const [user, setUser] = useState();
@@ -48,6 +49,9 @@ export default function App() {
       return <Auth />;
     }
     if (path === 'projects') {
+      return <ProjectView />;
+    }
+    if (path === 'newproject') {
       return <CreateProject />;
     }
     return <NotFound />;

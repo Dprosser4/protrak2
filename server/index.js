@@ -100,6 +100,7 @@ app.get('/api/projects', (req, res, next) => {
   const sql = `
     select *
     from "projects"
+    order by "createdAt" desc
   `;
   db.query(sql)
     .then((result) => {

@@ -8,11 +8,17 @@ export default function Home() {
   if (!user) return <Redirect to="sign-in" />;
 
   return (
-    <div>
-      <h1>Hey You Logged in!</h1>
-      <Button variant="primary" onClick={handleSignOut}>
-        Sign Out
-      </Button>
+
+    <div className="row col-md-4 align-items-center text-align-center">
+      <div className='text-center'>
+        <h2 className="fs-4">
+          Welcome {user.username}!
+        </h2>
+        <Button variant="primary" onClick={handleSignOut}>
+          Sign Out
+        </Button>
+      </div>
     </div>
+
   );
 }

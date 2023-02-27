@@ -74,7 +74,7 @@ app.post('/api/auth/sign-in', (req, res, next) => {
     .catch((err) => next(err));
 });
 
-app.post('/api/projects', (req, res, next) => {
+app.post('/api/project/newproject', (req, res, next) => {
   const { poNumber, name, address, city, state, zipcode, notes } = req.body;
   if (!poNumber || !name || !address || !city || !state || !zipcode) {
     res.status(400).json({
@@ -92,6 +92,20 @@ app.post('/api/projects', (req, res, next) => {
     .then((result) => {
       const [project] = result.rows;
       res.status(201).json(project);
+    })
+    .catch((err) => next(err));
+});
+
+app.get('/api/projects', (req, res, next) => {
+  const sql = `
+    select *
+    from "projects"
+    order by "createdAt" desc
+  `;
+  db.query(sql)
+    .then((result) => {
+      const projects = result.rows;
+      res.status(200).json(projects);
     })
     .catch((err) => next(err));
 });

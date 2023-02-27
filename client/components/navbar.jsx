@@ -21,7 +21,8 @@ export default function NavbarMain() {
               }
               {user &&
               <>
-                <Nav.Link href="#projects">Create Project</Nav.Link>
+                <Nav.Link href="#projects">Projects</Nav.Link>
+                <Nav.Link href="#newproject">Create Project</Nav.Link>
                 <Nav.Link onClick={handleSignOut}>Log Out</Nav.Link>
               </>
               }

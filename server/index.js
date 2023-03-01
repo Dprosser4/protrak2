@@ -74,7 +74,29 @@ app.post('/api/auth/sign-in', (req, res, next) => {
     .catch((err) => next(err));
 });
 
-app.post('/api/project/newproject', (req, res, next) => {
+app.get('/api/projects/:projectId', (req, res, next) => {
+  const projectId = Number(req.params.projectId);
+  if (!Number.isInteger(projectId) || projectId <= 0) {
+    throw new ClientError(400, 'invalid projectId');
+  }
+  const sql = `
+    select *
+    from "projects"
+    where "projectId" = $1
+  `;
+  const params = [projectId];
+  db.query(sql, params)
+    .then((result) => {
+      const project = result.rows[0];
+      if (!project) {
+        throw new ClientError(404, 'Project Does not exist');
+      }
+      res.status(200).json(project);
+    })
+    .catch((err) => next(err));
+});
+
+app.post('/api/projects', (req, res, next) => {
   const { poNumber, name, address, city, state, zipcode, notes } = req.body;
   if (!poNumber || !name || !address || !city || !state || !zipcode) {
     res.status(400).json({
@@ -106,6 +128,32 @@ app.get('/api/projects', (req, res, next) => {
     .then((result) => {
       const projects = result.rows;
       res.status(200).json(projects);
+    })
+    .catch((err) => next(err));
+});
+
+app.put('/api/projects/:projectId', (req, res, next) => {
+  const { poNumber, name, address, city, state, zipcode, notes, completed } = req.body;
+  const projectId = Number(req.params.projectId);
+  if (!Number.isInteger(projectId) || projectId <= 0) {
+    throw new ClientError(400, 'invalid projectId');
+  }
+
+  const sql = `
+    update "projects"
+    set "poNumber" = $2, "name" = $3, "address" = $4, "city" = $5, "state" = $6, "zipcode" = $7, "notes" = $8, "completed" = $9
+    where "projectId" = $1
+    returning *
+  `;
+  const params = [projectId, poNumber, name, address, city, state, zipcode, notes, completed];
+
+  db.query(sql, params)
+    .then((result) => {
+      const project = result.rows[0];
+      if (!project) {
+        throw new ClientError(404, 'Project Does not exist');
+      }
+      res.status(200).json(project);
     })
     .catch((err) => next(err));
 });

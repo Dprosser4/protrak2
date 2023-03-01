@@ -27,7 +27,8 @@ export default function ProjectView() {
       .catch((error) => { console.error('Error:', error); });
   }, [updateProject]);
 
-  const { user } = useContext(AppContext);
+  const { user, techs } = useContext(AppContext);
+
   if (!user) return <Redirect to="sign-in" />;
 
   if (updateProject) {
@@ -58,7 +59,7 @@ export default function ProjectView() {
               <p>Zipcode: {project.zipcode}</p>
               <p>Notes: {project.notes}</p>
               <p>Completed: {project.completed === true ? <span>Yes</span> : <span>No</span> } </p>
-              <p>Assigned To: {project.assignedTo === null ? <span>Not Assigned Yet</span> : project.assignedTo}</p>
+              <p>Assigned To: {project.assignedTo === null ? <span>Not Assigned Yet</span> : `${techs.find((tech) => tech.userId === project.assignedTo)?.firstName} ${techs.find((tech) => tech.userId === project.assignedTo)?.lastName}`}</p>
               <Button onClick={() => handleUpdateClick(project)}>Update</Button>
 
             </Accordion.Body>

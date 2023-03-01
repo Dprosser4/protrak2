@@ -99,6 +99,26 @@ app.get('/api/projects/:projectId', (req, res, next) => {
     .catch((err) => next(err));
 });
 
+app.get('/api/projects/assigned/:userId', (req, res, next) => {
+  const assignedTo = Number(req.params.userId);
+  if (!Number.isInteger(assignedTo) || assignedTo <= 0) {
+    throw new ClientError(400, 'invalid userId');
+  }
+  const sql = `
+    select *
+    from "projects"
+    where "assignedTo" = $1
+    order by "createdAt" desc
+  `;
+  const params = [assignedTo];
+  db.query(sql, params)
+    .then((result) => {
+      const project = result.rows;
+      res.status(200).json(project);
+    })
+    .catch((err) => next(err));
+});
+
 app.post('/api/projects', (req, res, next) => {
   const { poNumber, name, address, city, state, zipcode, notes } = req.body;
   if (!poNumber || !name || !address || !city || !state || !zipcode) {

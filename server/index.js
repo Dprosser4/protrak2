@@ -96,7 +96,7 @@ app.get('/api/projects/:projectId', (req, res, next) => {
     .catch((err) => next(err));
 });
 
-app.post('/api/projects/newproject', (req, res, next) => {
+app.post('/api/projects', (req, res, next) => {
   const { poNumber, name, address, city, state, zipcode, notes } = req.body;
   if (!poNumber || !name || !address || !city || !state || !zipcode) {
     res.status(400).json({

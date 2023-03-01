@@ -48,7 +48,10 @@ app.post('/api/auth/sign-in', (req, res, next) => {
   }
   const sql = `
     select "userId",
-           "hashedPassword"
+           "hashedPassword",
+           "role",
+           "firstName",
+           "lastName"
       from "users"
      where "username" = $1
   `;
@@ -59,14 +62,14 @@ app.post('/api/auth/sign-in', (req, res, next) => {
       if (!user) {
         throw new ClientError(401, 'invalid login');
       }
-      const { userId, hashedPassword } = user;
+      const { userId, hashedPassword, role, firstName, lastName } = user;
       return argon2
         .verify(hashedPassword, password)
         .then((isMatching) => {
           if (!isMatching) {
             throw new ClientError(401, 'invalid login');
           }
-          const payload = { userId, username };
+          const payload = { userId, username, role, firstName, lastName };
           const token = jwt.sign(payload, process.env.TOKEN_SECRET);
           res.json({ token, user: payload });
         });
@@ -133,19 +136,22 @@ app.get('/api/projects', (req, res, next) => {
 });
 
 app.put('/api/projects/:projectId', (req, res, next) => {
-  const { poNumber, name, address, city, state, zipcode, notes, completed } = req.body;
+  let { poNumber, name, address, city, state, zipcode, notes, completed, assignedTo } = req.body;
   const projectId = Number(req.params.projectId);
   if (!Number.isInteger(projectId) || projectId <= 0) {
     throw new ClientError(400, 'invalid projectId');
   }
-
+  assignedTo = Number(assignedTo);
+  if (!Number.isInteger(assignedTo) || assignedTo === 0) {
+    assignedTo = null;
+  }
   const sql = `
     update "projects"
-    set "poNumber" = $2, "name" = $3, "address" = $4, "city" = $5, "state" = $6, "zipcode" = $7, "notes" = $8, "completed" = $9
+    set "poNumber" = $2, "name" = $3, "address" = $4, "city" = $5, "state" = $6, "zipcode" = $7, "notes" = $8, "completed" = $9, "assignedTo" = $10
     where "projectId" = $1
     returning *
   `;
-  const params = [projectId, poNumber, name, address, city, state, zipcode, notes, completed];
+  const params = [projectId, poNumber, name, address, city, state, zipcode, notes, completed, assignedTo];
 
   db.query(sql, params)
     .then((result) => {
@@ -154,6 +160,21 @@ app.put('/api/projects/:projectId', (req, res, next) => {
         throw new ClientError(404, 'Project Does not exist');
       }
       res.status(200).json(project);
+    })
+    .catch((err) => next(err));
+});
+
+app.get('/api/users/techs', (req, res, next) => {
+  const sql = `
+    select "userId", "firstName", "lastName"
+    from "users"
+    where "role" = 'tech'
+    order by "firstName"
+  `;
+  db.query(sql)
+    .then((result) => {
+      const projects = result.rows;
+      res.status(200).json(projects);
     })
     .catch((err) => next(err));
 });

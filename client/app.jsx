@@ -9,9 +9,11 @@ import Navbar from './components/navbar';
 import PageContainer from './components/page-container';
 import CreateProject from './pages/create-project';
 import ProjectView from './pages/project-view';
+import TechProjectView from './pages/tech-project-view';
 
 export default function App() {
   const [user, setUser] = useState();
+  const [techs, setTechs] = useState([]);
   const [isAuthorizing, setIsAuthorizing] = useState(true);
   const [route, setRoute] = useState(parseRoute(window.location.hash));
 
@@ -27,6 +29,13 @@ export default function App() {
     setIsAuthorizing(false);
     return () => window.removeEventListener('hashchange', handleChange);
 
+  }, []);
+
+  useEffect(() => {
+    fetch('/api/users/techs')
+      .then((response) => response.json())
+      .then((data) => setTechs(data))
+      .catch((error) => { console.error('Error:', error); });
   }, []);
 
   function handleSignIn(result) {
@@ -51,6 +60,9 @@ export default function App() {
     if (path === 'projects') {
       return <ProjectView />;
     }
+    if (path === 'techprojects') {
+      return <TechProjectView />;
+    }
     if (path === 'newproject') {
       return <CreateProject />;
     }
@@ -59,7 +71,7 @@ export default function App() {
 
   if (isAuthorizing) return null;
 
-  const contextValue = { user, route, handleSignIn, handleSignOut };
+  const contextValue = { user, route, handleSignIn, handleSignOut, techs };
   return (
     <AppContext.Provider value={contextValue}>
       <Navbar />

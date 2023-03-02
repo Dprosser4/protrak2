@@ -1,5 +1,6 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import { Form, Button } from 'react-bootstrap';
+import AppContext from '../lib/app-context';
 
 import 'bootstrap/dist/css/bootstrap.min.css';
 
@@ -13,6 +14,7 @@ export default function UpdateForm({ project, onSave, onCancel }) {
   const [zipcode, setZipcode] = useState(project.zipcode);
   const [notes, setNotes] = useState(project.notes);
   const [completed, setCompleted] = useState(project.completed);
+  const [assignedTo, setAssignedTo] = useState(project.assignedTo);
   const [error, setError] = useState(false);
 
   function handleSubmit(event) {
@@ -22,7 +24,7 @@ export default function UpdateForm({ project, onSave, onCancel }) {
       headers: {
         'Content-Type': 'application/json'
       },
-      body: JSON.stringify({ poNumber, name, address, city, state, zipcode, notes, completed })
+      body: JSON.stringify({ poNumber, name, address, city, state, zipcode, notes, completed, assignedTo })
     };
     fetch(`/api/projects/${project.projectId}`, req)
 
@@ -37,10 +39,12 @@ export default function UpdateForm({ project, onSave, onCancel }) {
       })
       .catch((error) => { console.error('Error:', error); });
   }
+  const { techs } = useContext(AppContext);
 
   return (
     <div>
       <Form onSubmit={handleSubmit}>
+
         <Form.Group className='mb-3' controlId="formPoNumber">
           <Form.Label>PO Number:</Form.Label>
           <Form.Control
@@ -110,6 +114,20 @@ export default function UpdateForm({ project, onSave, onCancel }) {
             />
         </Form.Group>
 
+        <Form.Group className='mb-3' controlId="formCompleted">
+          <Form.Label>Assigned To:</Form.Label>
+          <Form.Control
+              as="select"
+              value={assignedTo}
+            onChange={(e) => setAssignedTo(e.target.value)}
+              >
+            <option value="unassigned">Not Assigned Yet</option>
+            {techs.map((tech) => (<option key={tech.userId} value={tech.userId} >{`${tech.firstName} ${tech.lastName}`}</option>))}
+
+          </Form.Control>
+
+        </Form.Group>
+
         <Form.Group className='mb-3' controlId="formNotes">
           <Form.Label>Notes:</Form.Label>
           <Form.Control
@@ -121,7 +139,7 @@ export default function UpdateForm({ project, onSave, onCancel }) {
             />
         </Form.Group>
 
-        <Form.Group className='mb-3' controlId="formNotes">
+        <Form.Group className='mb-3' controlId="formCompleted">
           <Form.Label>Completed:</Form.Label>
           <Form.Check
             type='checkbox'

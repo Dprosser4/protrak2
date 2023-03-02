@@ -12,6 +12,8 @@ CREATE TABLE "public"."users" (
 	"hashedPassword" TEXT NOT NULL,
 	"createdAt" timestamptz(6) not null default now() ,
 	"role" TEXT /* NOT NULL */,
+  "firstName" TEXT,
+  "lastName" TEXT,
 	CONSTRAINT "users_pk" PRIMARY KEY ("userId")
 ) WITH (
   OIDS=FALSE
@@ -27,7 +29,7 @@ CREATE TABLE "public"."projects" (
 	"city" TEXT NOT NULL,
 	"state" TEXT NOT NULL,
 	"zipcode" TEXT NOT NULL,
-	"notes" TEXT,
+	"notes" TEXT DEFAULT '',
 	"completed" BOOLEAN NOT NULL DEFAULT FALSE,
 	"assignedTo" int,
 	"createdAt" timestamptz(6) not null default now(),

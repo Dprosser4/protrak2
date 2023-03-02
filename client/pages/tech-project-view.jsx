@@ -2,12 +2,12 @@ import React, { useContext, useState, useEffect } from 'react';
 import AppContext from '../lib/app-context';
 import Redirect from '../components/redirect';
 import { Accordion, Button } from 'react-bootstrap';
-import UpdateForm from '../components/update-form';
+import TechUpdateForm from '../components/tech-update-form';
 
-export default function ProjectView() {
+export default function TechProjectView() {
   const [projects, setProjects] = useState([]);
   const [updateProject, setUpdateProject] = useState(null);
-
+  const { user } = useContext(AppContext);
   function handleUpdateClick(project) {
     setUpdateProject(project);
   }
@@ -21,18 +21,19 @@ export default function ProjectView() {
   }
 
   useEffect(() => {
-    fetch('/api/projects')
+    if (!user) {
+      return;
+    }
+    fetch(`/api/projects/assigned/${user.userId}`)
       .then((response) => response.json())
       .then((data) => setProjects(data))
       .catch((error) => { console.error('Error:', error); });
-  }, [updateProject]);
-
-  const { user, techs } = useContext(AppContext);
+  }, [updateProject, user]);
 
   if (!user) return <Redirect to="sign-in" />;
 
   if (updateProject) {
-    return (<UpdateForm project={updateProject} onSave={onSave} onCancel={onCancel} />);
+    return (<TechUpdateForm project={updateProject} onSave={onSave} onCancel={onCancel} />);
   }
 
   return (
@@ -40,10 +41,14 @@ export default function ProjectView() {
       <div className="row col-md-4 align-items-center text-align-center">
         <div className='text-center'>
           <h2 className="fs-4">
-            All Projects
+            Assigned Projects
           </h2>
+          {projects.length === 0 &&
+          <p>There are no projects assigned to you</p>
+      }
         </div>
       </div>
+
       <Accordion>
         {projects.map((project) => (
           <Accordion.Item key={project.projectId} eventKey={project.projectId}>
@@ -51,7 +56,6 @@ export default function ProjectView() {
               <span className='fw-bolder'>{project.poNumber}</span> -- <span>{project.name}</span>
             </Accordion.Header>
             <Accordion.Body>
-
               <p>PO Number: {project.poNumber}</p>
               <p>Address: {project.address}</p>
               <p>City: {project.city}</p>
@@ -59,9 +63,7 @@ export default function ProjectView() {
               <p>Zipcode: {project.zipcode}</p>
               <p>Notes: {project.notes}</p>
               <p>Completed: {project.completed === true ? <span>Yes</span> : <span>No</span> } </p>
-              <p>Assigned To: {project.assignedTo === null ? <span>Not Assigned Yet</span> : `${techs.find((tech) => tech.userId === project.assignedTo)?.firstName} ${techs.find((tech) => tech.userId === project.assignedTo)?.lastName}`}</p>
               <Button onClick={() => handleUpdateClick(project)}>Update</Button>
-
             </Accordion.Body>
           </Accordion.Item>
         ))}

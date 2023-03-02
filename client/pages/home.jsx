@@ -12,7 +12,7 @@ export default function Home() {
     <div className="row col-md-4 align-items-center text-align-center">
       <div className='text-center'>
         <h2 className="fs-4">
-          Welcome {user.username}!
+          Welcome {`${user.firstName}!`}
         </h2>
         <Button variant="primary" onClick={handleSignOut}>
           Sign Out

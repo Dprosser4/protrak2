@@ -28,7 +28,7 @@ export default function NavbarMain() {
                   </>
                 }
                 {user.role === 'tech' &&
-                  <Nav.Link href="#projects">My Projects</Nav.Link>
+                  <Nav.Link href="#techprojects">My Projects</Nav.Link>
                 }
 
                 <Nav.Link onClick={handleSignOut}>Log Out</Nav.Link>

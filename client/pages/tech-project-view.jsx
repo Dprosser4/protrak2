@@ -45,10 +45,9 @@ export default function TechProjectView() {
           </h2>
           {projects.length === 0 &&
           <p>There are no projects assigned to you</p>
-      }
+          }
         </div>
       </div>
-
       <Accordion>
         {projects.map((project) => (
           <Accordion.Item key={project.projectId} eventKey={project.projectId}>

@@ -9,6 +9,7 @@ import Navbar from './components/navbar';
 import PageContainer from './components/page-container';
 import CreateProject from './pages/create-project';
 import ProjectView from './pages/project-view';
+import TechProjectView from './pages/tech-project-view';
 
 export default function App() {
   const [user, setUser] = useState();
@@ -58,6 +59,9 @@ export default function App() {
     }
     if (path === 'projects') {
       return <ProjectView />;
+    }
+    if (path === 'techprojects') {
+      return <TechProjectView />;
     }
     if (path === 'newproject') {
       return <CreateProject />;

@@ -11,10 +11,13 @@ export default function TechUpdateForm({ project, onSave, onCancel }) {
   const zipcode = project.zipcode;
   const [notes, setNotes] = useState(project.notes);
   const [completed, setCompleted] = useState(project.completed);
-  const assignedTo = project.assignedTo;
+  let assignedTo = project.assignedTo;
 
   function handleSubmit(event) {
     event.preventDefault();
+    if (completed) {
+      assignedTo = null;
+    }
     const req = {
       method: 'PUT',
       headers: {

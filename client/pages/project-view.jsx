@@ -1,8 +1,8 @@
 import React, { useContext, useState, useEffect } from 'react';
 import AppContext from '../lib/app-context';
 import Redirect from '../components/redirect';
-import { Accordion, Button } from 'react-bootstrap';
 import UpdateForm from '../components/update-form';
+import ProjectsAccordian from '../components/project-accordian';
 
 export default function ProjectView() {
   const [projects, setProjects] = useState([]);
@@ -27,7 +27,7 @@ export default function ProjectView() {
       .catch((error) => { console.error('Error:', error); });
   }, [updateProject]);
 
-  const { user, techs } = useContext(AppContext);
+  const { user } = useContext(AppContext);
 
   if (!user) return <Redirect to="sign-in" />;
 
@@ -35,37 +35,46 @@ export default function ProjectView() {
     return (<UpdateForm project={updateProject} onSave={onSave} onCancel={onCancel} />);
   }
 
+  const completedProjects = projects.filter((project) => project.completed);
+  const unassignedProjects = projects.filter((project) => project.assignedTo === null && !project.completed);
+  const assignedProjects = projects.filter((project) => project.assignedTo && !project.completed);
+
   return (
     <>
       <div className="row col-md-4 align-items-center text-align-center">
         <div className='text-center'>
           <h2 className="fs-4">
-            All Projects
+            Unassigned Projects
           </h2>
+          {unassignedProjects.length === 0 &&
+            <p>There are no unassigned projects.</p>
+          }
         </div>
       </div>
-      <Accordion>
-        {projects.map((project) => (
-          <Accordion.Item key={project.projectId} eventKey={project.projectId}>
-            <Accordion.Header>
-              <span className='fw-bolder'>{project.poNumber}</span> -- <span>{project.name}</span>
-            </Accordion.Header>
-            <Accordion.Body>
 
-              <p>PO Number: {project.poNumber}</p>
-              <p>Address: {project.address}</p>
-              <p>City: {project.city}</p>
-              <p>State: {project.state}</p>
-              <p>Zipcode: {project.zipcode}</p>
-              <p>Notes: {project.notes}</p>
-              <p>Completed: {project.completed === true ? <span>Yes</span> : <span>No</span> } </p>
-              <p>Assigned To: {project.assignedTo === null ? <span>Not Assigned Yet</span> : `${techs.find((tech) => tech.userId === project.assignedTo)?.firstName} ${techs.find((tech) => tech.userId === project.assignedTo)?.lastName}`}</p>
-              <Button onClick={() => handleUpdateClick(project)}>Update</Button>
-
-            </Accordion.Body>
-          </Accordion.Item>
-        ))}
-      </Accordion>
+      <ProjectsAccordian projects={unassignedProjects} handleUpdateClick={handleUpdateClick} />
+      <div className="row col-md-4 align-items-center text-align-center">
+        <div className='text-center'>
+          <h2 className="fs-4">
+            Assigned Projects
+          </h2>
+          {assignedProjects.length === 0 &&
+            <p>There are no assigned projects.</p>
+          }
+        </div>
+      </div>
+      <ProjectsAccordian projects={assignedProjects} handleUpdateClick={handleUpdateClick} />
+      <div className="row col-md-4 align-items-center text-align-center">
+        <div className='text-center'>
+          <h2 className="fs-4">
+            Completed Projects
+          </h2>
+          {completedProjects.length === 0 &&
+            <p>There are no completed projects.</p>
+          }
+        </div>
+      </div>
+      <ProjectsAccordian projects={completedProjects} handleUpdateClick={handleUpdateClick} />
     </>
   );
 }

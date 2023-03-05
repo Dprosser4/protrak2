@@ -1,6 +1,7 @@
 import React, { useContext } from 'react';
 import AppContext from '../lib/app-context';
 import Redirect from '../components/redirect';
+import { Col } from 'react-bootstrap';
 
 export default function Home() {
   const { user } = useContext(AppContext);
@@ -8,13 +9,10 @@ export default function Home() {
 
   return (
 
-    <div className="row col-md-4 align-items-center text-align-center">
-      <div className='text-center'>
-        <h2 className="fs-4">
-          Welcome {`${user.firstName}!`}
-        </h2>
-      </div>
-    </div>
-
+    <Col className="text-center">
+      <h2 className="fs-4">
+        Welcome {`${user.firstName}!`}
+      </h2>
+    </Col>
   );
 }

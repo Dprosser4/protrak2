@@ -1,11 +1,12 @@
 import React from 'react';
+import { Container, Row } from 'react-bootstrap';
 
 export default function PageContainer({ children }) {
   return (
-    <div className="container-fluid">
-      <div className="row justify-content-center mt-3">
+    <Container fluid>
+      <Row className="row justify-content-center mt-3">
         {children}
-      </div>
-    </div>
+      </Row>
+    </Container>
   );
 }

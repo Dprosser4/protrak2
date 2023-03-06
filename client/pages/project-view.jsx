@@ -55,7 +55,7 @@ export default function ProjectView() {
       <ProjectsAccordian projects={unassignedProjects} handleUpdateClick={handleUpdateClick} />
       <div className="row col-md-4 align-items-center text-align-center">
         <div className='text-center'>
-          <h2 className="fs-4">
+          <h2 className="mt-3 fs-4">
             Assigned Projects
           </h2>
           {assignedProjects.length === 0 &&
@@ -66,7 +66,7 @@ export default function ProjectView() {
       <ProjectsAccordian projects={assignedProjects} handleUpdateClick={handleUpdateClick} />
       <div className="row col-md-4 align-items-center text-align-center">
         <div className='text-center'>
-          <h2 className="fs-4">
+          <h2 className="mt-3 fs-4">
             Completed Projects
           </h2>
           {completedProjects.length === 0 &&

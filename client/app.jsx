@@ -10,6 +10,8 @@ import PageContainer from './components/page-container';
 import CreateProject from './pages/create-project';
 import ProjectView from './pages/project-view';
 import TechProjectView from './pages/tech-project-view';
+import ManageUsers from './pages/manage-users';
+import AddUser from './pages/add-user';
 
 export default function App() {
   const [user, setUser] = useState();
@@ -65,6 +67,12 @@ export default function App() {
     }
     if (path === 'newproject') {
       return <CreateProject />;
+    }
+    if (path === 'manageusers') {
+      return <ManageUsers />;
+    }
+    if (path === 'adduser') {
+      return <AddUser />;
     }
     return <NotFound />;
   }

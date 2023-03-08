@@ -19,19 +19,19 @@ app.use(express.json());
 app.use(staticMiddleware);
 
 app.post('/api/auth/sign-up', (req, res, next) => {
-  const { username, password } = req.body;
-  if (!username || !password) {
+  const { username, password, role, firstName, lastName } = req.body;
+  if (!username || !password || !role || !firstName || !lastName) {
     throw new ClientError(400, 'username and password are required fields');
   }
   argon2
     .hash(password)
     .then((hashedPassword) => {
       const sql = `
-        insert into "users" ("username", "hashedPassword")
-        values ($1, $2)
+        insert into "users" ("username", "hashedPassword", "role", "firstName", "lastName")
+        values ($1, $2, $3, $4, $5)
         returning "userId", "username", "createdAt"
       `;
-      const params = [username, hashedPassword];
+      const params = [username, hashedPassword, role, firstName, lastName];
       return db.query(sql, params);
     })
     .then((result) => {
@@ -190,6 +190,20 @@ app.get('/api/users/techs', (req, res, next) => {
     from "users"
     where "role" = 'tech'
     order by "firstName"
+  `;
+  db.query(sql)
+    .then((result) => {
+      const projects = result.rows;
+      res.status(200).json(projects);
+    })
+    .catch((err) => next(err));
+});
+
+app.get('/api/users', (req, res, next) => {
+  const sql = `
+    select "username", "firstName", "lastName", "role"
+    from "users"
+    order by "role"
   `;
   db.query(sql)
     .then((result) => {

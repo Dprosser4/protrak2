@@ -1,18 +1,17 @@
 import React, { useContext } from 'react';
 import AppContext from '../lib/app-context';
 import Redirect from '../components/redirect';
-import { Col } from 'react-bootstrap';
+import NewUserForm from '../components/new-user-form';
 
-export default function Home() {
+export default function AddUser() {
   const { user } = useContext(AppContext);
   if (!user) return <Redirect to="sign-in" />;
 
   return (
 
-    <Col className="text-center">
-      <h2 className="fs-4">
-        Welcome {`${user.firstName}!`}
-      </h2>
-    </Col>
+    <div className="row col-md-4 align-items-center text-align-center">
+      <NewUserForm />
+    </div>
+
   );
 }

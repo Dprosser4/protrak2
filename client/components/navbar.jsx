@@ -9,15 +9,17 @@ export default function NavbarMain() {
     <div>
       <Navbar collapseOnSelect expand="md" bg="primary" variant="dark">
         <Container fluid>
-          <Navbar.Brand href="#">Protrak2</Navbar.Brand>
+          <Navbar.Brand href="#">            <img
+            src="/images/Protrak2-logo.png"
+            height="30"
+            className="d-inline-block align-top"
+            alt="React Bootstrap logo"
+          /></Navbar.Brand>
           <Navbar.Toggle aria-controls="responsive-navbar-nav" />
           <Navbar.Collapse id="responsive-navbar-nav">
             <Nav className="me-auto">
               {!user &&
-              <>
-                <Nav.Link href="#sign-in">Login</Nav.Link>
-                <Nav.Link href="#sign-up">Register</Nav.Link>
-              </>
+              <Nav.Link href="#sign-in">Login</Nav.Link>
               }
               {user &&
               <>
@@ -25,6 +27,7 @@ export default function NavbarMain() {
                   <>
                     <Nav.Link href="#projects">Projects</Nav.Link>
                     <Nav.Link href="#newproject">Create Project</Nav.Link>
+                    <Nav.Link href="#manageusers">Manage Users</Nav.Link>
                   </>
                 }
                 {user.role === 'tech' &&

@@ -7,6 +7,16 @@ export default function AuthForm({ onSignIn }) {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
 
+  function demoAdmin(event) {
+    setUsername('admin1');
+    setPassword('admin1');
+  }
+
+  function demoTech(event) {
+    setUsername('tech1');
+    setPassword('tech1');
+  }
+
   function handleSubmit(event) {
     event.preventDefault();
     const req = {
@@ -32,6 +42,7 @@ export default function AuthForm({ onSignIn }) {
           <Form.Label>Userame:</Form.Label>
           <Form.Control
                 type="text"
+            value={username}
                 placeholder="Enter username"
               onChange={(e) => setUsername(e.target.value)}
                 required
@@ -50,6 +61,12 @@ export default function AuthForm({ onSignIn }) {
         </Form.Group>
         <Button variant="primary" type="submit">
           Login
+        </Button>
+        <Button className='ms-1 mb-1 float-end' variant="primary" onClick={demoAdmin}>
+          Demo Admin
+        </Button>
+        <Button className=' float-end' variant="primary" onClick={demoTech}>
+          Demo Technician
         </Button>
       </Form>
     </div>

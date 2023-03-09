@@ -6,6 +6,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 export default function AuthForm({ onSignIn }) {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
+  const [error, setError] = useState(false);
 
   function demoAdmin(event) {
     setUsername('admin1');
@@ -31,8 +32,11 @@ export default function AuthForm({ onSignIn }) {
       .then((result) => {
         if (result.user && result.token) {
           onSignIn(result);
+        } else {
+          setError(true);
         }
-      });
+      })
+      .catch((error) => { console.error('Error:', error); });
   }
 
   return (
@@ -45,10 +49,13 @@ export default function AuthForm({ onSignIn }) {
             value={username}
                 placeholder="Enter username"
               onChange={(e) => setUsername(e.target.value)}
+            isInvalid={!!error}
                 required
               />
+          <Form.Control.Feedback type="invalid">
+            Incorrect Username or Password.
+          </Form.Control.Feedback>
         </Form.Group>
-
         <Form.Group className='mb-3' controlId="formPassword">
           <Form.Label>Password</Form.Label>
           <Form.Control
@@ -56,18 +63,21 @@ export default function AuthForm({ onSignIn }) {
                 placeholder="Password"
                 value={password}
               onChange={(e) => setPassword(e.target.value)}
+            isInvalid={!!error}
                 required
               />
         </Form.Group>
-        <Button variant="primary" type="submit">
+        <Button className='me-2 mb-2' variant="primary" type="submit">
           Login
         </Button>
-        <Button className='ms-1 mb-1 float-end' variant="primary" onClick={demoAdmin}>
-          Demo Admin
-        </Button>
-        <Button className=' float-end' variant="primary" onClick={demoTech}>
+
+        <Button className='me-2 mb-2' variant="primary" onClick={demoTech}>
           Demo Technician
         </Button>
+        <Button className='me-2 mb-2' variant="primary" onClick={demoAdmin}>
+          Demo Admin
+        </Button>
+
       </Form>
     </div>
   );

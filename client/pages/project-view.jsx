@@ -41,40 +41,33 @@ export default function ProjectView() {
 
   return (
     <>
-      <div className="row col-md-4 align-items-center text-align-center">
-        <div className='text-center'>
-          <h2 className="fs-4">
-            Unassigned Projects
-          </h2>
-          {unassignedProjects.length === 0 &&
-            <p>There are no unassigned projects.</p>
+      <div className="col-lg-4 text-align-center">
+        <h2 className="text-center mt-3 fs-4">
+          Unassigned Projects
+        </h2>
+        <ProjectsAccordian projects={unassignedProjects} handleUpdateClick={handleUpdateClick} />
+        {unassignedProjects.length === 0 &&
+        <p>There are no unassigned projects.</p>
           }
-        </div>
       </div>
-
-      <ProjectsAccordian projects={unassignedProjects} handleUpdateClick={handleUpdateClick} />
-      <div className="row col-md-4 align-items-center text-align-center">
-        <div className='text-center'>
-          <h2 className="mt-3 fs-4">
-            Assigned Projects
-          </h2>
-          {assignedProjects.length === 0 &&
-            <p>There are no assigned projects.</p>
+      <div className="col-lg-4 text-align-center">
+        <h2 className="text-center mt-3 fs-4">
+          Assigned Projects
+        </h2>
+        <ProjectsAccordian projects={assignedProjects} handleUpdateClick={handleUpdateClick} />
+        {assignedProjects.length === 0 &&
+        <p>There are no assigned projects.</p>
           }
-        </div>
       </div>
-      <ProjectsAccordian projects={assignedProjects} handleUpdateClick={handleUpdateClick} />
-      <div className="row col-md-4 align-items-center text-align-center">
-        <div className='text-center'>
-          <h2 className="mt-3 fs-4">
-            Completed Projects
-          </h2>
-          {completedProjects.length === 0 &&
-            <p>There are no completed projects.</p>
+      <div className="col-lg-4 text-align-center">
+        <h2 className="text-center mt-3 fs-4">
+          Completed Projects
+        </h2>
+        <ProjectsAccordian projects={completedProjects} handleUpdateClick={handleUpdateClick} />
+        {completedProjects.length === 0 &&
+        <p>There are no completed projects.</p>
           }
-        </div>
       </div>
-      <ProjectsAccordian projects={completedProjects} handleUpdateClick={handleUpdateClick} />
     </>
   );
 }

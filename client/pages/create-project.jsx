@@ -8,7 +8,7 @@ export default function CreateProject() {
   if (!user) return <Redirect to="sign-in" />;
 
   return (
-    <div className="row col-md-4 align-items-center text-align-center">
+    <div className="col-xl-4 col-lg-6 col-md-8 col-sm-10 align-items-center text-align-center">
       <div className='text-center'>
         <h2 className="fs-4">
           Create a New Project

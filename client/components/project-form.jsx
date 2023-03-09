@@ -65,7 +65,6 @@ export default function ProjectForm() {
           Project Created
         </Alert>
       )}
-
       <p className='fs-6 text-left'>Required*</p>
       <Form onSubmit={handleSubmit}>
         <Form.Group className='mb-3' controlId="formPoNumber">
@@ -82,7 +81,6 @@ export default function ProjectForm() {
             PO Number already exists! Try Another
           </Form.Control.Feedback>
         </Form.Group>
-
         <Form.Group className='mb-3' controlId="formName">
           <Form.Label>Name:*</Form.Label>
           <Form.Control
@@ -93,7 +91,6 @@ export default function ProjectForm() {
               required
             />
         </Form.Group>
-
         <Form.Group className='mb-3' controlId="formAddress">
           <Form.Label>Address:*</Form.Label>
           <Form.Control
@@ -104,7 +101,6 @@ export default function ProjectForm() {
               required
             />
         </Form.Group>
-
         <Form.Group className='mb-3' controlId="formCity">
           <Form.Label>City:*</Form.Label>
           <Form.Control
@@ -115,7 +111,6 @@ export default function ProjectForm() {
               required
             />
         </Form.Group>
-
         <Form.Group className='mb-3' controlId="formState">
           <Form.Label>State:*</Form.Label>
           <Form.Control
@@ -126,7 +121,6 @@ export default function ProjectForm() {
               required
             />
         </Form.Group>
-
         <Form.Group className='mb-3' controlId="formZipcode">
           <Form.Label>Zipcode:*</Form.Label>
           <Form.Control
@@ -137,7 +131,6 @@ export default function ProjectForm() {
               required
             />
         </Form.Group>
-
         <Form.Group className='mb-3' controlId="formNotes">
           <Form.Label>Notes:</Form.Label>
           <Form.Control
@@ -148,7 +141,6 @@ export default function ProjectForm() {
               onChange={(e) => setNotes(e.target.value)}
             />
         </Form.Group>
-
         <Button variant="primary" type="submit">
           Create
         </Button>

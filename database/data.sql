@@ -1,6 +1,13 @@
 insert into "users" ("username", "hashedPassword", "role", "firstName" , "lastName")
 values ('dylan1', '$argon2id$v=19$m=4096,t=3,p=1$PnqCcNmXM6LKe+e8i9E8Zw$mzcDy8WZvSWpZRWsRGaSump9SCuKntniWL6vVCHPHJ4', 'admin', 'Dylan', 'Prosser');
 
+insert into "users" ("username", "hashedPassword", "role", "firstName" , "lastName")
+values ('admin1', '$argon2id$v=19$m=4096,t=3,p=1$0EkHGiZvBgd9VDgwZ1K22A$41Fgr06Udg/AJwmQTZHwwapYZNRXV/TkFLNRmVJAFc4', 'admin', 'Admin', 'User');
+
+insert into "users" ("username", "hashedPassword", "role", "firstName" , "lastName")
+values ('tech1', '$argon2id$v=19$m=4096,t=3,p=1$a4Vt1Jt3en+e2RkFnko88Q$soS42HSsBj7+qsaWal2pCSeU01wT+Gq7oI5axfwW6bc', 'tech', 'Technician', 'User');
+
+
 
 
 insert into "projects" ("poNumber","name", "address", "city", "state", "zipcode")

@@ -70,7 +70,7 @@ https://user-images.githubusercontent.com/98434681/224394951-0f389269-19c9-49c5-
 1. Clone the repository.
 
     ```shell
-    git clone https://github.com/jiannicariaga/yeat.git
+    git clone https://github.com/Dprosser4/protrak2.git
     cd protrak2
     ```
 

@@ -3,10 +3,12 @@ import AppContext from '../lib/app-context';
 import Redirect from '../components/redirect';
 import { Accordion, Button } from 'react-bootstrap';
 import TechUpdateForm from '../components/tech-update-form';
+import { ScaleLoader } from 'react-spinners';
 
 export default function TechProjectView() {
   const [projects, setProjects] = useState([]);
   const [updateProject, setUpdateProject] = useState(null);
+  const [isLoading, setIsLoading] = useState(true);
   const { user } = useContext(AppContext);
   function handleUpdateClick(project) {
     setUpdateProject(project);
@@ -26,7 +28,10 @@ export default function TechProjectView() {
     }
     fetch(`/api/projects/assigned/${user.userId}`)
       .then((response) => response.json())
-      .then((data) => setProjects(data))
+      .then((data) => {
+        setProjects(data);
+        setIsLoading(false);
+      })
       .catch((error) => { console.error('Error:', error); });
   }, [updateProject, user]);
 
@@ -34,6 +39,12 @@ export default function TechProjectView() {
 
   if (updateProject) {
     return (<TechUpdateForm project={updateProject} onSave={onSave} onCancel={onCancel} />);
+  }
+
+  if (isLoading) {
+    return (<div className='d-flex mt-5 justify-content-center'>
+      <ScaleLoader color="#136EFD" />
+    </div>);
   }
 
   return (

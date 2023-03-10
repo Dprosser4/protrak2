@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Form, Button } from 'react-bootstrap';
+import { ScaleLoader } from 'react-spinners';
 
 import 'bootstrap/dist/css/bootstrap.min.css';
 
@@ -7,6 +8,7 @@ export default function AuthForm({ onSignIn }) {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
 
   function demoAdmin(event) {
     setUsername('admin1');
@@ -20,6 +22,7 @@ export default function AuthForm({ onSignIn }) {
 
   function handleSubmit(event) {
     event.preventDefault();
+    setIsLoading(true);
     const req = {
       method: 'POST',
       headers: {
@@ -33,10 +36,17 @@ export default function AuthForm({ onSignIn }) {
         if (result.user && result.token) {
           onSignIn(result);
         } else {
+          setIsLoading(false);
           setError(true);
         }
       })
       .catch((error) => { console.error('Error:', error); });
+  }
+
+  if (isLoading) {
+    return (<div className='d-flex mt-5 justify-content-center'>
+      <ScaleLoader color="#136EFD" />
+    </div>);
   }
 
   return (

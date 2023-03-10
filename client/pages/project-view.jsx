@@ -3,10 +3,12 @@ import AppContext from '../lib/app-context';
 import Redirect from '../components/redirect';
 import UpdateForm from '../components/update-form';
 import ProjectsAccordian from '../components/project-accordian';
+import { ScaleLoader } from 'react-spinners';
 
 export default function ProjectView() {
   const [projects, setProjects] = useState([]);
   const [updateProject, setUpdateProject] = useState(null);
+  const [isLoading, setIsLoading] = useState(true);
 
   function handleUpdateClick(project) {
     setUpdateProject(project);
@@ -23,7 +25,10 @@ export default function ProjectView() {
   useEffect(() => {
     fetch('/api/projects')
       .then((response) => response.json())
-      .then((data) => setProjects(data))
+      .then((data) => {
+        setProjects(data);
+        setIsLoading(false);
+      })
       .catch((error) => { console.error('Error:', error); });
   }, [updateProject]);
 
@@ -33,6 +38,12 @@ export default function ProjectView() {
 
   if (updateProject) {
     return (<UpdateForm project={updateProject} onSave={onSave} onCancel={onCancel} />);
+  }
+
+  if (isLoading) {
+    return (<div className='d-flex mt-5 justify-content-center'>
+      <ScaleLoader color="#136EFD" />
+    </div>);
   }
 
   const completedProjects = projects.filter((project) => project.completed);

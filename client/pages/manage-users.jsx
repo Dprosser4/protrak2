@@ -3,15 +3,17 @@ import Redirect from '../components/redirect';
 import AppContext from '../lib/app-context';
 import UsersAccordian from '../components/users-accordian';
 import { Button } from 'react-bootstrap';
+import { ScaleLoader } from 'react-spinners';
 
 export default function ManageUsers() {
   const [users, setUsers] = useState([]);
   const { user } = useContext(AppContext);
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     fetch('/api/users')
       .then((response) => response.json())
-      .then((data) => setUsers(data))
+      .then((data) => { setIsLoading(false); setUsers(data); })
       .catch((error) => { console.error('Error:', error); });
   }, []);
 
@@ -19,6 +21,12 @@ export default function ManageUsers() {
 
   const adminUsers = users.filter((user) => user.role === 'admin');
   const techUsers = users.filter((user) => user.role === 'tech');
+
+  if (isLoading) {
+    return (<div className='d-flex mt-5 justify-content-center'>
+      <ScaleLoader color="#136EFD" />
+    </div>);
+  }
 
   return (
     <div className="row col-md-4 align-items-center text-align-center">

@@ -1,4 +1,5 @@
 require('dotenv/config');
+const s3 = require('./s3');
 const pg = require('pg');
 const argon2 = require('argon2');
 const express = require('express');
@@ -211,6 +212,11 @@ app.get('/api/users', (req, res, next) => {
       res.status(200).json(projects);
     })
     .catch((err) => next(err));
+});
+
+app.get('/s3Url', async (req, res) => {
+  const url = await s3.generateUploadURL();
+  res.send({ url });
 });
 
 app.use(errorMiddleware);

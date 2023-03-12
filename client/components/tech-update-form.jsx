@@ -13,6 +13,11 @@ export default function TechUpdateForm({ project, onSave, onCancel }) {
   const [completed, setCompleted] = useState(project.completed);
   let assignedTo = project.assignedTo;
 
+  /*   async function imageUpload() {
+    const { url } = await fetch('/s3Url').then((res) => res.json());
+    console.log(url);
+  } */
+
   function handleSubmit(event) {
     event.preventDefault();
     if (completed) {
@@ -53,7 +58,7 @@ export default function TechUpdateForm({ project, onSave, onCancel }) {
               onChange={(e) => setNotes(e.target.value)}
             />
         </Form.Group>
-
+        {/*        <Button onClick={imageUpload} variant='primary'>Upload Images</Button> */}
         <Form.Group className='mb-3' controlId="formCompleted">
           <Form.Label>Completed:</Form.Label>
           <Form.Check

@@ -1,8 +1,10 @@
 import React, { useState } from 'react';
 import { Form, Button } from 'react-bootstrap';
+import ImageModal from './image-modal.jsx';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 export default function TechUpdateForm({ project, onSave, onCancel }) {
+  const [projectImages, setProjectImages] = useState([]);
   const poNumber = project.poNumber;
   const name = project.name;
   const address = project.address;
@@ -12,6 +14,17 @@ export default function TechUpdateForm({ project, onSave, onCancel }) {
   const [notes, setNotes] = useState(project.notes);
   const [completed, setCompleted] = useState(project.completed);
   let assignedTo = project.assignedTo;
+
+  const [show, setShow] = useState(false);
+
+  const handleClose = () => setShow(false);
+  const handleShow = () => {
+    fetch(`/api/images/${project.projectId}`)
+      .then((response) => response.json())
+      .then((data) => setProjectImages(data))
+      .catch((error) => { console.error('Error:', error); });
+    setShow(true);
+  };
 
   function handleSubmit(event) {
     event.preventDefault();
@@ -37,6 +50,9 @@ export default function TechUpdateForm({ project, onSave, onCancel }) {
 
   return (
     <div>
+      {show &&
+        <ImageModal projectImages={projectImages} project={project} show={show} handleClose={handleClose} />
+      }
       <Form onSubmit={handleSubmit}>
         <p>PO Number: {project.poNumber}</p>
         <p>Address: {project.address}</p>
@@ -53,6 +69,10 @@ export default function TechUpdateForm({ project, onSave, onCancel }) {
               onChange={(e) => setNotes(e.target.value)}
             />
         </Form.Group>
+
+        <Button variant="primary" onClick={handleShow}>
+          Add/View Images
+        </Button>
 
         <Form.Group className='mb-3' controlId="formCompleted">
           <Form.Label>Completed:</Form.Label>

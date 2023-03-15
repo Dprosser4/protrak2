@@ -1,4 +1,5 @@
 require('dotenv/config');
+const s3 = require('./s3');
 const pg = require('pg');
 const argon2 = require('argon2');
 const express = require('express');
@@ -209,6 +210,53 @@ app.get('/api/users', (req, res, next) => {
     .then((result) => {
       const projects = result.rows;
       res.status(200).json(projects);
+    })
+    .catch((err) => next(err));
+});
+
+app.get('/s3Url', async (req, res) => {
+  const url = await s3.generateUploadURL();
+  res.send({ url });
+});
+
+app.post('/api/images', (req, res, next) => {
+  const { imageUrl, projectId } = req.body;
+  if (!imageUrl || !projectId) {
+    res.status(400).json({
+      error: 'imageUrl, and projectId are required fields'
+    });
+    return;
+  }
+  const sql = `
+    insert into "images" ("url","project")
+    values ($1, $2)
+    returning *
+  `;
+  const params = [imageUrl, projectId];
+  db.query(sql, params)
+    .then((result) => {
+      const [image] = result.rows;
+      res.status(201).json(image);
+    })
+    .catch((err) => next(err));
+});
+
+app.get('/api/images/:projectId', (req, res, next) => {
+  const projectId = Number(req.params.projectId);
+  if (!Number.isInteger(projectId) || projectId <= 0) {
+    throw new ClientError(400, 'invalid projectId');
+  }
+  const sql = `
+    select *
+    from "images"
+    where "project" = $1
+    order by "imageId" desc
+  `;
+  const params = [projectId];
+  db.query(sql, params)
+    .then((result) => {
+      const project = result.rows;
+      res.status(200).json(project);
     })
     .catch((err) => next(err));
 });

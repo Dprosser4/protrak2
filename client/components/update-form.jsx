@@ -1,11 +1,12 @@
 import React, { useState, useContext } from 'react';
 import { Form, Button } from 'react-bootstrap';
 import AppContext from '../lib/app-context';
+import ImageModal from './image-modal';
 
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 export default function UpdateForm({ project, onSave, onCancel }) {
-
+  const [projectImages, setProjectImages] = useState([]);
   const [poNumber, setPoNumber] = useState(project.poNumber);
   const [name, setName] = useState(project.name);
   const [address, setAddress] = useState(project.address);
@@ -16,6 +17,17 @@ export default function UpdateForm({ project, onSave, onCancel }) {
   const [completed, setCompleted] = useState(project.completed);
   const [assignedTo, setAssignedTo] = useState(project.assignedTo);
   const [error, setError] = useState(false);
+
+  const [show, setShow] = useState(false);
+
+  const handleClose = () => setShow(false);
+  const handleShow = () => {
+    fetch(`/api/images/${project.projectId}`)
+      .then((response) => response.json())
+      .then((data) => setProjectImages(data))
+      .catch((error) => { console.error('Error:', error); });
+    setShow(true);
+  };
 
   function handleSubmit(event) {
     event.preventDefault();
@@ -43,6 +55,9 @@ export default function UpdateForm({ project, onSave, onCancel }) {
 
   return (
     <div>
+      {show &&
+        <ImageModal projectImages={projectImages} project={project} show={show} handleClose={handleClose} />
+      }
       <Form onSubmit={handleSubmit}>
 
         <Form.Group className='mb-3' controlId="formPoNumber">
@@ -138,6 +153,10 @@ export default function UpdateForm({ project, onSave, onCancel }) {
               onChange={(e) => setNotes(e.target.value)}
             />
         </Form.Group>
+
+        <Button variant="primary" onClick={handleShow}>
+          Add/View Images
+        </Button>
 
         <Form.Group className='mb-3' controlId="formCompleted">
           <Form.Label>Completed:</Form.Label>

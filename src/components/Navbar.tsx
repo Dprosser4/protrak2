@@ -43,7 +43,7 @@ export default function Navbar() {
               <img
                 src="/images/Protrak2-logo.png"
                 alt="Protrak2"
-                className="h-8 w-auto"
+                className="h-8 w-auto bg-primary-600 rounded px-2 py-1 shadow-sm"
               />
               <span className="text-xl font-semibold text-gray-900">Protrak2</span>
             </Link>

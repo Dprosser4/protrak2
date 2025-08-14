@@ -40,7 +40,7 @@ export default function Login() {
         <div>
           <div className="flex justify-center">
             <img
-              className="h-12 w-auto"
+              className="h-12 w-auto bg-primary-600 rounded px-3 py-2 shadow-md"
               src="/images/Protrak2-logo.png"
               alt="Protrak2"
             />

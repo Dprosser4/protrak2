@@ -15,7 +15,8 @@
     "db:import": "sh database/import.sh",
     "type-check": "tsc --noEmit",
     "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
-    "lint:fix": "eslint . --ext ts,tsx --fix"
+    "lint:fix": "eslint . --ext ts,tsx --fix",
+    "heroku-postbuild": "npm run build"
   },
   "dependencies": {
     "argon2": "^0.31.2",

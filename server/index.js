@@ -285,6 +285,6 @@ app.get('/api/images/:projectId', (req, res, next) => {
 
 app.use(errorMiddleware);
 
-app.listen(process.env.PORT, () => {
+app.listen(process.env.PORT, '0.0.0.0', () => {
   process.stdout.write(`\n\napp listening on port ${process.env.PORT}\n\n`);
 });

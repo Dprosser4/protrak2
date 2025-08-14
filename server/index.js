@@ -43,8 +43,8 @@ app.post('/api/auth/sign-up', (req, res, next) => {
 });
 
 app.post('/api/auth/sign-in', (req, res, next) => {
-  const { username, password } = req.body;
-  if (!username || !password) {
+  const { email, password } = req.body;
+  if (!email || !password) {
     throw new ClientError(401, 'invalid login');
   }
   const sql = `
@@ -56,7 +56,7 @@ app.post('/api/auth/sign-in', (req, res, next) => {
       from "users"
      where "username" = $1
   `;
-  const params = [username];
+  const params = [email];
   db.query(sql, params)
     .then((result) => {
       const [user] = result.rows;
@@ -70,7 +70,7 @@ app.post('/api/auth/sign-in', (req, res, next) => {
           if (!isMatching) {
             throw new ClientError(401, 'invalid login');
           }
-          const payload = { userId, username, role, firstName, lastName };
+          const payload = { id: userId, email, role, firstName, lastName };
           const token = jwt.sign(payload, process.env.TOKEN_SECRET);
           res.json({ token, user: payload });
         });

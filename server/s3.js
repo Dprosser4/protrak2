@@ -1,8 +1,10 @@
 
 import util from 'util';
 import crypto from 'crypto';
-import { S3 } from 'aws-sdk';
+import AWS from 'aws-sdk';
 import 'dotenv/config';
+
+const { S3 } = AWS;
 
 const randomBytes = util.promisify(crypto.randomBytes);
 

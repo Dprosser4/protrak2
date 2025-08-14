@@ -1,4 +1,4 @@
-const ClientError = require('./client-error');
+import ClientError from './client-error.js';
 
 function errorMiddleware(err, req, res, next) {
 
@@ -19,4 +19,4 @@ function errorMiddleware(err, req, res, next) {
   }
 }
 
-module.exports = errorMiddleware;
+export default errorMiddleware;

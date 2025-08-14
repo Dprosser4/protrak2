@@ -1,12 +1,12 @@
-require('dotenv/config');
-const s3 = require('./s3');
-const pg = require('pg');
-const argon2 = require('argon2');
-const express = require('express');
-const jwt = require('jsonwebtoken');
-const staticMiddleware = require('./static-middleware');
-const errorMiddleware = require('./error-middleware');
-const ClientError = require('./client-error');
+import 'dotenv/config';
+import s3 from './s3.js';
+import pg from 'pg';
+import argon2 from 'argon2';
+import express from 'express';
+import jwt from 'jsonwebtoken';
+import staticMiddleware from './static-middleware.js';
+import errorMiddleware from './error-middleware.js';
+import ClientError from './client-error.js';
 
 const db = new pg.Pool({
   connectionString: process.env.DATABASE_URL,

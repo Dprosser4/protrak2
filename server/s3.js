@@ -1,9 +1,9 @@
 
-const util = require('util');
-const crypto = require('crypto');
-const { S3 } = require('aws-sdk');
+import util from 'util';
+import crypto from 'crypto';
+import { S3 } from 'aws-sdk';
+import 'dotenv/config';
 
-require('dotenv/config');
 const randomBytes = util.promisify(crypto.randomBytes);
 
 const region = 'us-west-1';
@@ -18,16 +18,18 @@ const s3 = new S3({
   signatureVersion: 'v4'
 });
 
-module.exports.generateUploadURL = async function () {
-  const rawBytes = await randomBytes(16);
-  const imageName = rawBytes.toString('hex');
+export default {
+  generateUploadURL: async function () {
+    const rawBytes = await randomBytes(16);
+    const imageName = rawBytes.toString('hex');
 
-  const params = ({
-    Bucket: bucketName,
-    Key: imageName,
-    Expires: 60
-  });
+    const params = ({
+      Bucket: bucketName,
+      Key: imageName,
+      Expires: 60
+    });
 
-  const uploadURL = await s3.getSignedUrlPromise('putObject', params);
-  return uploadURL;
+    const uploadURL = await s3.getSignedUrlPromise('putObject', params);
+    return uploadURL;
+  }
 };
